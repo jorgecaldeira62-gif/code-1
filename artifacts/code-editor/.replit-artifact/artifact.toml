@@ -1,0 +1,36 @@
+kind = "web"
+previewPath = "/"
+title = "Code Editor"
+version = "1.0.0"
+id = "artifacts/code-editor"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22595
+
+[services.development]
+run = "pnpm --filter @workspace/code-editor run dev"
+
+[services.production]
+serve = "static"
+buildDir = "artifacts/code-editor/dist/public"
+
+[services.production.build]
+args = ["sh", "-c", "BASE_PATH=/ pnpm --filter @workspace/code-editor run build"]
+
+[services.production.build.env]
+NODE_ENV = "production"
+
+[[services.production.rewrites]]
+source = "/(.*)"
+destination = "/index.html"
+
+[services.env]
+PORT = "22595"
+BASE_PATH = "/"
